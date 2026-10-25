@@ -26,10 +26,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            python-version: "3.11"
+            python-version: "3.14"
             os-key: linux
           - os: windows-latest
-            python-version: "3.12"
+            python-version: "3.14"
             os-key: windows
     steps:
       - name: Checkout

@@ -56,7 +56,7 @@ jobs:
     # - name: Run tests
     #   run: uv run pytest datamapplot/tests --show-capture=no -v --disable-warnings
     - name: Run python tests (Unix)
-      if: runner.os != 'Windows_NT'
+      if: runner.os != 'Windows'
       run: |-
         export CI=true
         mkdir -p ${{ runner.temp }}/mpl
@@ -66,7 +66,7 @@ jobs:
             --mpl-results-path=${{ runner.temp }}/mpl
       shell: bash
     - name: Run python tests (Windows)
-      if: runner.os == 'Windows_NT'
+      if: runner.os == 'Windows'
       run: |-
         $env:CI = "true"
         New-Item -ItemType Directory -Force -Path "${{ runner.temp }}\mpl"
@@ -76,7 +76,7 @@ jobs:
             --mpl-results-path="${{ runner.temp }}\mpl"
       shell: powershell
     - name: List contents of ${{ runner.temp }}/mpl
-      if: runner.os != 'Windows_NT'
+      if: runner.os != 'Windows'
       run: |-
         echo "Listing contents of ${{ runner.temp }}/mpl:"
         ls -la ${{ runner.temp }}/mpl
@@ -87,15 +87,15 @@ jobs:
         name: mpl-test-results-${{ github.run_id }}-${{ runner.os }}-py${{ matrix.python-version }}
         path: "${{ runner.temp }}/mpl"
     - name: List contents of html dir
-      if: runner.os != 'Windows_NT'
+      if: runner.os != 'Windows'
       run: |-
         echo "Listing contents of html dir:"
         ls -la ${{ github.workspace }}/datamapplot/tests/html
     - name: Start HTTP server (Unix)
-      if: runner.os != 'Windows_NT'
+      if: runner.os != 'Windows'
       run: python -m http.server 8000 -d ${{ github.workspace }}/datamapplot/tests/html &
     - name: Start HTTP server (Windows)
-      if: runner.os == 'Windows_NT'
+      if: runner.os == 'Windows'
       run: |-
         $serverJob = Start-Process python -ArgumentList "-m", "http.server", "8000", "-d", "$env:GITHUB_WORKSPACE\datamapplot\tests\html" -PassThru -NoNewWindow
         Start-Sleep -Seconds 5
@@ -131,7 +131,7 @@ jobs:
       run: npx playwright install --with-deps ${{ matrix.browsers }}
       working-directory: "${{ github.workspace }}/datamapplot/interactive_tests"
     - name: Run Playwright tests (Unix)
-      if: success() && runner.os != 'Windows_NT'
+      if: success() && runner.os != 'Windows'
       env:
         CI: 'true'
       run: |-
@@ -143,7 +143,7 @@ jobs:
       shell: bash
       working-directory: "${{ github.workspace }}/datamapplot/interactive_tests"
     - name: Run Playwright tests (Windows)
-      if: success() && runner.os == 'Windows_NT'
+      if: success() && runner.os == 'Windows'
       env:
         CI: 'true'
       run: |-
